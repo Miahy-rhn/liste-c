@@ -32,14 +32,21 @@ test: all
 	@echo "\n--- Lancement du Test 03 ---"
 	./test03
 
+
+# Nouvelle cible avec Address Sanitizer
+bench_test02: $(TEST_DIR)/test02.c $(LIB_OBJ)
+	$(CC) $(CFLAGS) -g -fsanitize=address $(TEST_DIR)/test02.c $(LIB_OBJ) -o bench_test02
+
+# Mettre à jour le clean pour supprimer aussi cet exécutable
+clean:
+	rm -f $(EXECS) bench_test02
+
+
 # Aide pour l'utilisateur
 help:
 	@echo "Possibilités offertes par ce Makefile :"
 	@echo "  make         : Compile les trois programmes (test01, test02, test03)"
 	@echo "  make test    : Compile et lance l'exécution de tous les tests"
+	@echo "  make bench_test02 : Compile test02 avec détection de fuites mémoire"
 	@echo "  make clean   : Supprime les exécutables générés"
 	@echo "  make help    : Affiche ce message d'aide"
-
-# Nettoyage
-clean:
-	rm -f $(EXECS)
