@@ -5,19 +5,41 @@ TEST_DIR = test
 # Compilateur et options
 CC = gcc
 CFLAGS = -Wall -Wextra -I$(LIB_DIR)
+LIB_OBJ = $(LIB_DIR)/liste-c.o
 
-# Cibles
-all: test01
+# Liste des exécutables
+EXECS = test01 test02 test03
 
-# Compilation de l'exécutable test01
-# On lie directement le fichier objet .o
-test01: $(TEST_DIR)/test01.c $(LIB_DIR)/liste-c.o
-	$(CC) $(CFLAGS) $(TEST_DIR)/test01.c $(LIB_DIR)/liste-c.o -o test01
+# Cible par défaut : compile tout
+all: $(EXECS)
 
-# Règle pour lancer le test
-test: test01
+# Compilation de chaque test
+test01: $(TEST_DIR)/test01.c $(LIB_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test01.c $(LIB_OBJ) -o test01
+
+test02: $(TEST_DIR)/test02.c $(LIB_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test02.c $(LIB_OBJ) -o test02
+
+test03: $(TEST_DIR)/test03.c $(LIB_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test03.c $(LIB_OBJ) -o test03
+
+# Exécution de tous les tests à la suite
+test: all
+	@echo "--- Lancement du Test 01 ---"
 	./test01
+	@echo "\n--- Lancement du Test 02 ---"
+	./test02
+	@echo "\n--- Lancement du Test 03 ---"
+	./test03
 
-# Nettoyage des fichiers générés
+# Aide pour l'utilisateur
+help:
+	@echo "Possibilités offertes par ce Makefile :"
+	@echo "  make         : Compile les trois programmes (test01, test02, test03)"
+	@echo "  make test    : Compile et lance l'exécution de tous les tests"
+	@echo "  make clean   : Supprime les exécutables générés"
+	@echo "  make help    : Affiche ce message d'aide"
+
+# Nettoyage
 clean:
-	rm -f test01
+	rm -f $(EXECS)
