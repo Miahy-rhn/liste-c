@@ -1,27 +1,33 @@
 # Chemins
 LIB_DIR = lib
 TEST_DIR = test
+SRC_DIR = src  # Nouveau dossier source
 
-# Compilateur et options
 CC = gcc
-CFLAGS = -Wall -Wextra -I$(LIB_DIR)
-LIB_OBJ = $(LIB_DIR)/liste-c.o
+CFLAGS = -Wall -Wextra -I$(SRC_DIR) -I$(LIB_DIR)
 
-# Liste des exécutables
+# On définit l'objet de notre nouvelle implémentation
+NEW_OBJ = $(SRC_DIR)/liste-c.o
+# On garde l'ancien pour comparaison si besoin
+OLD_OBJ = $(LIB_DIR)/liste-c.o
+
 EXECS = test01 test02 test03
 
-# Cible par défaut : compile tout
 all: $(EXECS)
 
-# Compilation de chaque test
-test01: $(TEST_DIR)/test01.c $(LIB_OBJ)
-	$(CC) $(CFLAGS) $(TEST_DIR)/test01.c $(LIB_OBJ) -o test01
+# Règle pour compiler notre nouvelle implémentation
+$(SRC_DIR)/liste-c.o: $(SRC_DIR)/liste-c.c $(SRC_DIR)/liste-c.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/liste-c.c -o $(SRC_DIR)/liste-c.o
 
-test02: $(TEST_DIR)/test02.c $(LIB_OBJ)
-	$(CC) $(CFLAGS) $(TEST_DIR)/test02.c $(LIB_OBJ) -o test02
+# On modifie les tests pour qu'ils utilisent NOTRE nouvel objet
+test01: $(TEST_DIR)/test01.c $(NEW_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test01.c $(NEW_OBJ) -o test01
 
-test03: $(TEST_DIR)/test03.c $(LIB_OBJ)
-	$(CC) $(CFLAGS) $(TEST_DIR)/test03.c $(LIB_OBJ) -o test03
+test02: $(TEST_DIR)/test02.c $(NEW_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test02.c $(NEW_OBJ) -o test02
+
+test03: $(TEST_DIR)/test03.c $(NEW_OBJ)
+	$(CC) $(CFLAGS) $(TEST_DIR)/test03.c $(NEW_OBJ) -o test03
 
 # Exécution de tous les tests à la suite
 test: all
