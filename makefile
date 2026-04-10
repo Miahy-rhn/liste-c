@@ -1,23 +1,22 @@
-# Chemins
 LIB_DIR = lib
 TEST_DIR = test
-SRC_DIR = src  # Nouveau dossier source
+SRC_DIR = src
 
+# Compilateur et options
 CC = gcc
-CFLAGS = -Wall -Wextra -I$(SRC_DIR) -I$(LIB_DIR)
+# On ajoute -I$(SRC_DIR) pour que le compilateur trouve le .h dans src
+CFLAGS = -Wall -Wextra -I$(SRC_DIR)
 
-# On définit l'objet de notre nouvelle implémentation
+# Fichiers
 NEW_OBJ = $(SRC_DIR)/liste-c.o
-# On garde l'ancien pour comparaison si besoin
-OLD_OBJ = $(LIB_DIR)/liste-c.o
-
 EXECS = test01 test02 test03
 
 all: $(EXECS)
 
-# Règle pour compiler notre nouvelle implémentation
-$(SRC_DIR)/liste-c.o: $(SRC_DIR)/liste-c.c $(SRC_DIR)/liste-c.h
-	$(CC) $(CFLAGS) -c $(SRC_DIR)/liste-c.c -o $(SRC_DIR)/liste-c.o
+# Règle pour compiler l'objet
+# On précise bien le chemin du fichier .o pour éviter la confusion avec le dossier src
+$(NEW_OBJ): $(SRC_DIR)/liste-c.c $(SRC_DIR)/liste-c.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/liste-c.c -o $(NEW_OBJ)
 
 # On modifie les tests pour qu'ils utilisent NOTRE nouvel objet
 test01: $(TEST_DIR)/test01.c $(NEW_OBJ)

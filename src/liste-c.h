@@ -14,3 +14,6 @@ int getLC(ListeC liste, int pos);
 void replaceLC(ListeC liste, int value, int pos);	
 void insertLC(ListeC liste, int value, int pos);	
 void removeLC(ListeC liste, int pos);
+
+
+void deleteLC(ListeC liste);
