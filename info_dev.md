@@ -1,6 +1,6 @@
 # Réimplémentation de la librairie liste-c
 
-## Introduction
+## Intro
 Ce projet consiste en une réécriture complète de la librairie **liste-c**. 
 
 ### Pourquoi cette réimplémentation ?
